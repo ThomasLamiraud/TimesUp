@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand navbar-light bg-light">
+  <%= link_to root_path, class: "navbar-brand" do %>
+    <img src="" height="30" class="d-inline-block align-top" alt="TimesUp Logo">
+    Timesup
+  <% end %>
+  <ul class="navbar-nav navbar-right">
+    <% if current_user %>
+      <li class="nav-item">
+        <a class="nav-link active"> Bonjour <%= current_user.name %> </a>
+      </li>
+
+      <li class="nav-item">
+        <%= link_to "Create a game", new_game_path, class: "nav-link" %>
+      </li>
+
+      <li class="nav-item">
+        <%= link_to "Logout", logout_path, method: "delete", class: "nav-link" %>
+      </li>
+    <% else %>
+      <li class="nav-item" >
+        <%= link_to "Login User", login_path, class: "nav-link" %>
+      </li>
+
+      <li class="nav-item" >
+        <%= link_to "Create User", signup_path, class: "nav-link" %>
+      </li>
+
+    <% end %>
+  </ul>
+</nav>

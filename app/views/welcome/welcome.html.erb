@@ -5,11 +5,14 @@
 
   <% if current_user %>
     <%= "#{current_user.name} connected" %>
-    <%= link_to "Logout", logout_path, method: "delete", class: "nav-link" %>
+    <ul>
+      <% current_user.games.each do |game| %>
+        <li>
+          <%= link_to game.name, game_path(game.slug) %>
+        </li>
+      <% end %>
+    </ul>
   <% else %>
     no one connected
-    <%= link_to "Login User", login_path, class: "nav-link" %>
-
-    <%= link_to "Create User", signup_path, class: "nav-link" %>
   <% end %>
 </div>
