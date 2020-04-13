@@ -1,0 +1,23 @@
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  pool: 5
+  username: postgres
+  password:
+  host: docker
+  reconnect: false
+  port: 5432
+
+development:
+  <<: *default
+  database: timesup_development
+
+test:
+  <<: *default
+  database: timesup_test
+
+production:
+  <<: *default
+  database: timesup_production
+  username: timesup
+  password: <%= ENV['MY-APP-API_DATABASE_PASSWORD'] %>
