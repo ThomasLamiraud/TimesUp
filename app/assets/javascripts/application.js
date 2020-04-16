@@ -17,3 +17,4 @@
 //= require_tree .
 //= require popper
 //= require bootstrap
+//= require game_on

@@ -8,5 +8,9 @@ Rails.application.routes.draw do
   post '/login', to: "sessions#create"
   delete '/logout', to: "sessions#destroy"
 
-  resources :games, param: :slug
+  resources :games, param: :slug do
+    member do
+      put :create_players
+    end
+  end
 end

@@ -1,12 +1,92 @@
-<p><%= @game.name %></p>
-<ul>
-  <li>
-    <b> Players : </b>
-    <%= @game.player_count %>
-  </li>
+<div class="text-center mb-3 mt-3">
+  <h3><%= @game.name %></h3>
+</div>
+<div class="row">
+  <div class="col-lg-4">
+    <ul>
+      <li>
+        <b> Players : </b>
+        <%= @game.player_count %>
+      </li>
 
-  <li>
-    <b> Words : </b>
-    <%= @game.word_count %>
-  </li>
-</ul>
+      <li>
+        <b> Words : </b>
+        <%= @game.word_count %>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-lg-4">
+    <ul>
+      <li>
+        <% if @game.words.empty? %>
+          <p> No words yet, please create : </p>
+          <% @game.word_count.times { @game.words.build } if @game.words.empty? %>
+
+          <%= form_for @game, url: game_path(@game.slug), method: :put do |f| %>
+
+            <%= f.fields_for :words do |word| %>
+              <%= word.hidden_field :user_id, value: @game.user_id %>
+              <%= word.hidden_field :game_id, value: @game.id %>
+
+              <div class="form-group">
+                <%= word.label :word%>
+                <%= word.text_field :word, class: "form-control" %>
+              </div>
+
+            <% end %>
+            <%= f.submit "Save", class: "btn btn-primary" %>
+          <% end %>
+
+        <% else %>
+          <b> <%= @game.user.name %> </b>
+          words :
+          <% @game.words.each do |word| %>
+            <p> <%= word.word %> </p>
+          <% end %>
+        <% end %>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-lg-4">
+    <ul>
+      <li>
+        <% if @game.users.empty? %>
+          <p> No players yet, please add some : </p>
+          <% @game.player_count.times { @game.game_players.build } if @game.users.empty? %>
+
+          <%= form_for @game, url: create_players_game_path(@game.slug), method: :put do |f| %>
+
+            <%= f.fields_for :game_players do |gp| %>
+              <%= gp.hidden_field :game_id, value: @game.id %>
+
+              <div class="form-group">
+                <%= gp.label :user_id%>
+                <%= gp.select(:user_id, User.all.map { |u| [u.name, u.id] }, class: "form-control") %>
+              </div>
+
+            <% end %>
+            <%= f.submit "Save", class: "btn btn-primary" %>
+          <% end %>
+        <% else %>
+          <b> Players :  </b>
+          <% @game.users.each do |user| %>
+            <p> <%= user.name %> </p>
+          <% end %>
+        <% end %>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<h1>
+  The game :
+</h1>
+
+<div>
+  <p data-available-words="<%= @game.words.pluck(:word).shuffle %>">current word : <span class="current-word"> </span></p>
+
+  <button type="button" class="btn btn-success js-success-word">Success</button>
+  <button type="button" class="btn btn-secondary js-next-word" data-current-index="0">Pass</button>
+</div>
