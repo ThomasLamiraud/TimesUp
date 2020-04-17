@@ -21,10 +21,12 @@ class GamesController < ApplicationController
             .includes(:user)
             .joins(:user)
             .includes(:users)
-            .joins(:users)
+            .left_joins(:users)
             .includes(:words)
-            .joins(:words)
+            .left_joins(:words)
             .find_by(slug: params[:slug])
+
+    @user_words = current_user.words.where(game_id: @game.id)
   end
 
   def update
@@ -33,6 +35,7 @@ class GamesController < ApplicationController
       if @game.update(update_params)
         format.html { redirect_to game_path(@game.slug) }
       else
+        @user_words = current_user.words.where(game_id: @game.id)
         flash[:notice] = @game.errors.messages
         format.html { render :show }
       end
@@ -40,12 +43,12 @@ class GamesController < ApplicationController
   end
 
   def create_players
-    byebug
     @game = Game.find_by(slug: params[:slug])
     respond_to do |format|
       if @game.update(player_params)
         format.html { redirect_to game_path(@game.slug) }
       else
+        @user_words = current_user.words.where(game_id: @game.id)
         flash[:notice] = @game.errors.messages
         format.html { render :show }
       end

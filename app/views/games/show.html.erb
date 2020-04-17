@@ -2,7 +2,7 @@
   <h3><%= @game.name %></h3>
 </div>
 <div class="row">
-  <div class="col-lg-4">
+  <div class="col-md-4">
     <ul>
       <li>
         <b> Players : </b>
@@ -16,17 +16,18 @@
     </ul>
   </div>
 
-  <div class="col-lg-4">
+  <div class="col-md-4">
     <ul>
       <li>
-        <% if @game.words.empty? %>
+        <% if @user_words.empty? %>
           <p> No words yet, please create : </p>
-          <% @game.word_count.times { @game.words.build } if @game.words.empty? %>
+          <% @game.word_count.times { @game.words.build } if @user_words.empty? %>
 
           <%= form_for @game, url: game_path(@game.slug), method: :put do |f| %>
 
             <%= f.fields_for :words do |word| %>
-              <%= word.hidden_field :user_id, value: @game.user_id %>
+              <% next unless word.object.new_record? %>
+              <%= word.hidden_field :user_id, value: current_user.id %>
               <%= word.hidden_field :game_id, value: @game.id %>
 
               <div class="form-group">
@@ -39,9 +40,9 @@
           <% end %>
 
         <% else %>
-          <b> <%= @game.user.name %> </b>
+          <b> <%= current_user.name %> </b>
           words :
-          <% @game.words.each do |word| %>
+          <% @user_words.each do |word| %>
             <p> <%= word.word %> </p>
           <% end %>
         <% end %>
@@ -49,7 +50,7 @@
     </ul>
   </div>
 
-  <div class="col-lg-4">
+  <div class="col-md-4">
     <ul>
       <li>
         <% if @game.users.empty? %>
@@ -89,4 +90,9 @@
 
   <button type="button" class="btn btn-success js-success-word">Success</button>
   <button type="button" class="btn btn-secondary js-next-word" data-current-index="0">Pass</button>
+</div>
+
+
+<div class="js-score-area">
+  <p>Words found : <span class="js-score" data-score="0">0</span> / <%= @game.words.count %> </p>
 </div>

@@ -10,6 +10,7 @@ function doInitialize() {
   });
 
   $('.js-success-word').on('click', function (event) {
+    updateScore()
     removeWord()
     displayNextWord()
   })
@@ -32,16 +33,22 @@ function displayNextWord() {
 }
 
 function setIndex(current_index) {
-  console.log('current_index' + current_index);
   nextIndex = parseInt(current_index) + 1
   if (nextIndex == document.words.length || nextIndex > document.words.length){
     nextIndex = 0
   }
   $('.js-next-word').data('current-index', nextIndex)
-  console.log('nextIndex' +nextIndex);
   return nextIndex
 }
 
 function removeWord() {
   document.words.splice($('.js-next-word').data('current-index'), 1);
+}
+
+function updateScore() {
+  // document.words[$('.js-next-word').data('current-index')];
+  currentScore = $(".js-score").data('score');
+  newScore = currentScore + 1;
+  $(".js-score").data('score', currentScore + 1);
+  $(".js-score").html(newScore);
 }
