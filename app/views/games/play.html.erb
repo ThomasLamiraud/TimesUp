@@ -1,0 +1,38 @@
+<div class="text-center mb-3 mt-3">
+  <h3><%= @game.name %></h3>
+</div>
+
+<div>
+  <h1 data-available-words="<%= @game.words.available.pluck(:word).shuffle %>">current word : <span class="current-word"> </span></h1>
+
+  <div class="js-score-area">
+    <p>Words found : <span class="js-score" data-score="0">0</span> / <span class="js-max-score"><%= @game.words.available.count %> </span></p>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-4">
+          <button type="button" class="btn btn-success js-success-word btn-lg">Success</button>
+        </div>
+
+        <div class="col-md-4">
+          <button type="button" class="btn btn-secondary js-next-word btn-lg" data-current-index="0">Pass</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-4">
+          <button type="button" class="btn btn-primary js-update-word-status">End player turn</button>
+        </div>
+
+        <div class="col-md-4">
+          <%= form_for @game, url: reset_words_status_game_path(@game.slug), method: :put do |f| %>
+            <%= f.submit "End turn", class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

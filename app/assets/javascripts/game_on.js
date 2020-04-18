@@ -3,21 +3,28 @@ $(document).on('turbolinks:load', function() {
 });
 
 function doInitialize() {
-  setWords()
+  if ($('[data-available-words]').length > 0) {
+    setWords()
 
-  $('.js-next-word').on('click', function (event) {
-    displayNextWord()
-  });
+    $('.js-next-word').on('click', function (event) {
+      displayNextWord()
+    });
 
-  $('.js-success-word').on('click', function (event) {
-    updateScore()
-    removeWord()
-    displayNextWord()
-  })
+    $('.js-success-word').on('click', function (event) {
+      updateScore()
+      removeWord()
+      displayNextWord()
+    })
+
+    $('.js-update-word-status').on('click', function (event) {
+      updateWords()
+    })
+  }
 }
 
 function setWords() {
   document.words = $('[data-available-words]').data('available-words')
+  document.found_words = []
   $('.current-word').html(document.words[0]);
 }
 
@@ -42,6 +49,8 @@ function setIndex(current_index) {
 }
 
 function removeWord() {
+  word = document.words[$('.js-next-word').data('current-index')];
+  document.found_words.push(word)
   document.words.splice($('.js-next-word').data('current-index'), 1);
 }
 
@@ -49,6 +58,25 @@ function updateScore() {
   // document.words[$('.js-next-word').data('current-index')];
   currentScore = $(".js-score").data('score');
   newScore = currentScore + 1;
-  $(".js-score").data('score', currentScore + 1);
-  $(".js-score").html(newScore);
+  if (newScore <= parseInt($(".js-max-score").html())) {
+    $(".js-score").data('score', newScore);
+    $(".js-score").html(newScore);
+  }
+}
+
+function updateWords() {
+  if (document.found_words.length > 0) {
+    $.ajax({
+      url: '/update_words',
+      type: 'PUT',
+      dataType: 'json',
+      data: { words: JSON.stringify(document.found_words) },
+      success: function(data) {
+        window.location.reload();
+      },
+      error: function(e) {
+        console.log(e);
+      }
+    });
+  }
 }

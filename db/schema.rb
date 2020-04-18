@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 2020_04_16_193400) do
     t.integer "user_id"
     t.integer "game_id"
     t.integer "used_count"
+    t.boolean "hide"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

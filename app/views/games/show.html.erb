@@ -28,6 +28,7 @@
               <% next unless word.object.new_record? %>
               <%= word.hidden_field :user_id, value: current_user.id %>
               <%= word.hidden_field :game_id, value: @game.id %>
+              <%= word.hidden_field :hide, value: false %>
 
               <div class="form-group">
                 <%= word.label :word%>
@@ -86,18 +87,4 @@
   </div>
 </div>
 
-<h1>
-  The game :
-</h1>
-
-<div>
-  <p data-available-words="<%= @game.words.pluck(:word).shuffle %>">current word : <span class="current-word"> </span></p>
-
-  <button type="button" class="btn btn-success js-success-word">Success</button>
-  <button type="button" class="btn btn-secondary js-next-word" data-current-index="0">Pass</button>
-</div>
-
-
-<div class="js-score-area">
-  <p>Words found : <span class="js-score" data-score="0">0</span> / <%= @game.words.count %> </p>
-</div>
+<%= link_to "Start game", play_game_path(@game.slug), class: "btn btn-primary", role: "button" %>

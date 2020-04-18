@@ -11,6 +11,10 @@ Rails.application.routes.draw do
   resources :games, param: :slug do
     member do
       put :create_players
+      get :play
+      put :reset_words_status
     end
   end
+
+  put "update_words", to: "words#update_words"
 end

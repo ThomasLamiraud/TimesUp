@@ -30,6 +30,23 @@ class GamesController < ApplicationController
     @game.word_count.times { @game.words.build } if @user_words.empty?
   end
 
+  def play
+    @game = Game
+            .includes(:user)
+            .joins(:user)
+            .includes(:users)
+            .left_joins(:users)
+            .includes(:words)
+            .left_joins(:words)
+            .find_by(slug: params[:slug])
+  end
+
+  def reset_words_status
+    @game = Game.find_by(slug: params[:slug])
+    @game.words.update_all(hide: false)
+    redirect_to play_game_path(@game.slug)
+  end
+
   def update
     @game = Game.find_by(slug: params[:slug])
     respond_to do |format|
@@ -63,7 +80,7 @@ class GamesController < ApplicationController
   end
 
   def update_params
-    params.require(:game).permit(words_attributes: %i[id user_id game_id word])
+    params.require(:game).permit(words_attributes: %i[id user_id game_id word hide])
   end
 
   def player_params
