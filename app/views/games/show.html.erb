@@ -21,7 +21,6 @@
       <li>
         <% if @user_words.empty? %>
           <p> No words yet, please create : </p>
-          <% @game.word_count.times { @game.words.build } if @user_words.empty? %>
 
           <%= form_for @game, url: game_path(@game.slug), method: :put do |f| %>
 
@@ -32,8 +31,14 @@
 
               <div class="form-group">
                 <%= word.label :word%>
-                <%= word.text_field :word, class: "form-control" %>
+                <%= word.text_field :word, class: "form-control #{word.object.errors.any? ? "is-invalid" : ""}" %>
+                <% if word.object.errors.any? %>
+                  <div class="error-feedback">
+                    <%= word.object.errors.messages[:word].join(', ') %>
+                  </div>
+                <% end %>
               </div>
+
 
             <% end %>
             <%= f.submit "Save", class: "btn btn-primary" %>

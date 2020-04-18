@@ -26,7 +26,8 @@ class GamesController < ApplicationController
             .left_joins(:words)
             .find_by(slug: params[:slug])
 
-    @user_words = current_user.words.where(game_id: @game.id)
+    user_words
+    @game.word_count.times { @game.words.build } if @user_words.empty?
   end
 
   def update
@@ -35,7 +36,7 @@ class GamesController < ApplicationController
       if @game.update(update_params)
         format.html { redirect_to game_path(@game.slug) }
       else
-        @user_words = current_user.words.where(game_id: @game.id)
+        user_words
         flash[:notice] = @game.errors.messages
         format.html { render :show }
       end
@@ -48,7 +49,7 @@ class GamesController < ApplicationController
       if @game.update(player_params)
         format.html { redirect_to game_path(@game.slug) }
       else
-        @user_words = current_user.words.where(game_id: @game.id)
+        user_words
         flash[:notice] = @game.errors.messages
         format.html { render :show }
       end
@@ -67,5 +68,9 @@ class GamesController < ApplicationController
 
   def player_params
     params.require(:game).permit(game_players_attributes: %i[id user_id game_id _destroy])
+  end
+
+  def user_words
+    @user_words ||= @game.words.where(user_id: current_user.id, game_id: @game.id)
   end
 end
