@@ -1,6 +1,9 @@
 <div class="text-center mb-3 mt-3">
   <h2><%= @game.name %></h2>
-  <h3 class="js-timer-display"></h3>
+  <h2>Round : <%= @game.display_round %></h2>
+  <h3 class="js-timer-display" data-timer-value="<%= Game::TIMER_VALUES[@game.round.to_sym] %>"></h3>
+  <button type="button" class="btn btn-secondary js-timer-btn js-timer-restart">Restart</button>
+  <button type="button" class="btn btn-secondary js-timer-btn js-timer-pause">Pause</button>
 </div>
 
 <div>

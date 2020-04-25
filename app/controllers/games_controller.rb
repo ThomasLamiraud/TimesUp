@@ -43,8 +43,24 @@ class GamesController < ApplicationController
 
   def reset_words_status
     @game = Game.find_by(slug: params[:slug])
-    @game.words.update_all(hide: false)
-    redirect_to play_game_path(@game.slug)
+
+    case @game.round
+    when "turn_1"
+      @game.round = "turn_2"
+    when "turn_2"
+      @game.round = "turn_3"
+    when "turn_3"
+      @game.state = "finished"
+    end
+    @game.save
+
+    @game.words.update_all(hide: false) unless @game.state == "finished"
+
+    if @game.round == "turn_3" && @game.state == "finished"
+      redirect_to result_game_path(@game.slug)
+    else
+      redirect_to play_game_path(@game.slug)
+    end
   end
 
   def update
@@ -80,7 +96,7 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    params.require(:game).permit(:name, :player_count, :word_count, :user_id)
+    params.require(:game).permit(:name, :player_count, :word_count, :user_id, :round)
   end
 
   def update_params

@@ -1,7 +1,13 @@
 <div class="text-center mb-3 mt-3">
   <h2><%= @game.name %></h2>
 
-  <p>Coucou <b><%= current_user.name %></b>, quand ton tour viendra de jouer tu pourras cliquer sur le button ci dessous !</p>
+  <% if @game.round == "turn_3" && @game.state == "finished" %>
+    <p> c'est finit, merci d'avoir participer n'hésiter à faire une donation à la fondation Toto®</p>
+  <% else %>
 
-  <%= link_to "My turn to play", play_game_path(@game.slug), class: "btn btn-primary", role: "button" %>
+    <p>Coucou <b><%= current_user.name %></b>, quand ton tour viendra de jouer tu pourras cliquer sur le button ci dessous !</p>
+
+    <%= link_to "My turn to play", play_game_path(@game.slug), class: "btn btn-primary", role: "button" %>
+
+  <% end %>
 </div>

@@ -3,28 +3,48 @@ $(document).on("turbolinks:load", function() {
 });
 
 function doInitializeTimer() {
-
   if ($('.js-timer-display').length > 0) {
     initializeTimer()
   }
 }
 
-
 function initializeTimer() {
-  var counter = 10;
-  var interval = setInterval(function() {
-    counter--;
 
-    if (counter <= 0) {
-      clearInterval(interval);
-      $('.js-timer-display').html("<h3>Count down complete</h3>");
-      updateWords()
-      return;
+  var count = $('.js-timer-display').data('timer-value'),
+    $time = $('.js-timer-display'),
+    timer,
+    paused = false,
+    counter = function(){
+      count--;
+      if (count <= 0) {
+        $time.html("<h3>Count down complete</h3>");
+        updateWords()
+        return;
+      } else {
+        $time.html(count);
+        console.log("Timer --> " + count);
+      }
+
+      timer = setTimeout(function(){
+        counter();
+      }, 1000);
+    };
+
+  counter();
+
+  $('.js-timer-btn').on('click', function(){
+    clearTimeout(timer);
+    if ($(this).hasClass('js-timer-restart')) {
+      count = 0;
+      paused = false;
+      counter();
     } else {
-      $('.js-timer-display').html(counter);
-      console.log("Timer --> " + counter);
+      paused = !paused;
+      if (!paused) {
+        counter();
+      }
     }
-  }, 1000);
+  });
 }
 
 function updateWords() {
