@@ -7,6 +7,8 @@ class Game < ApplicationRecord
 
   before_create :set_slug, :set_state, :set_round
 
+  scope :not_finished, -> { where.not(state: "finished")}
+
   validates :player_count, :player_count, numericality: { only_integer: true }
 
   accepts_nested_attributes_for :words,

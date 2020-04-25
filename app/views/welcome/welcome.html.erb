@@ -10,7 +10,7 @@
       <div class="col">
         <ul>
           Im admin of this games :
-          <% @user_games.each do |game| %>
+          <% @admin_games.each do |game| %>
             <li>
               <%= link_to game.name, game_path(game.slug) %>
             </li>
@@ -21,12 +21,9 @@
       <div class="col">
         <ul>
           Im player of this games :
-          <% current_user.games.order(created_at: :desc).each do |game| %>
+          <% @player_games.each do |game| %>
             <li>
               <%= link_to game.name, game_path(game.slug) %>
-              <% if game.state == "finished" %>
-                delete
-              <% end %>
             </li>
           <% end %>
         </ul>
