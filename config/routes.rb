@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       put :create_players
       get :play
       put :reset_words_status
+      get :result
     end
   end
 

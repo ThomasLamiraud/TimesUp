@@ -73,6 +73,10 @@ class GamesController < ApplicationController
     end
   end
 
+  def result
+    @game = Game.find_by(slug: params[:slug])
+  end
+
   private
 
   def game_params

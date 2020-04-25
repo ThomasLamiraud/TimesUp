@@ -18,3 +18,4 @@
 //= require popper
 //= require bootstrap
 //= require game_on
+//= require timer

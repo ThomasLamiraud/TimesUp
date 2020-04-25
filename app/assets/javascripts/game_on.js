@@ -1,9 +1,12 @@
 $(document).on('turbolinks:load', function() {
-  doInitialize();
+  console.log('game_on');
+  doInitializeGameOn();
 });
 
-function doInitialize() {
+function doInitializeGameOn() {
+  console.log("game_on -- doInitialize [before]");
   if ($('[data-available-words]').length > 0) {
+    console.log("game_on -- doInitialize [inside]");
     setWords()
 
     $('.js-next-word').on('click', function (event) {
@@ -15,14 +18,11 @@ function doInitialize() {
       removeWord()
       displayNextWord()
     })
-
-    $('.js-update-word-status').on('click', function (event) {
-      updateWords()
-    })
   }
 }
 
 function setWords() {
+  console.log("toto");
   document.words = $('[data-available-words]').data('available-words')
   document.found_words = []
   $('.current-word').html(document.words[0]);
@@ -55,28 +55,10 @@ function removeWord() {
 }
 
 function updateScore() {
-  // document.words[$('.js-next-word').data('current-index')];
   currentScore = $(".js-score").data('score');
   newScore = currentScore + 1;
   if (newScore <= parseInt($(".js-max-score").html())) {
     $(".js-score").data('score', newScore);
     $(".js-score").html(newScore);
-  }
-}
-
-function updateWords() {
-  if (document.found_words.length > 0) {
-    $.ajax({
-      url: '/update_words',
-      type: 'PUT',
-      dataType: 'json',
-      data: { words: JSON.stringify(document.found_words) },
-      success: function(data) {
-        window.location.reload();
-      },
-      error: function(e) {
-        console.log(e);
-      }
-    });
   }
 }

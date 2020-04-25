@@ -1,5 +1,6 @@
 <div class="text-center mb-3 mt-3">
-  <h3><%= @game.name %></h3>
+  <h2><%= @game.name %></h2>
+  <h3 class="js-timer-display"></h3>
 </div>
 
 <div>
@@ -24,7 +25,8 @@
     <div class="col-md-6">
       <div class="row">
         <div class="col-md-4">
-          <button type="button" class="btn btn-primary js-update-word-status">End player turn</button>
+          <%= link_to "End player turn", result_game_path(@game.slug), class: "btn btn-primary", role: "button" %>
+          <!-- <button type="button" class="btn btn-primary js-update-word-status">End player turn</button> -->
         </div>
 
         <div class="col-md-4">
