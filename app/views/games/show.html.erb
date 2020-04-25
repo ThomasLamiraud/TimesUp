@@ -2,7 +2,7 @@
   <h3><%= @game.name %></h3>
 </div>
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-4 col-sm-12">
     <ul>
       <li>
         <b> Players : </b>
@@ -16,7 +16,7 @@
     </ul>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-4 col-sm-12">
     <ul>
       <li>
         <% if @user_words.empty? %>
@@ -56,7 +56,7 @@
     </ul>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-4 col-sm-12">
     <ul>
       <li>
         <% if @game.users.empty? %>
@@ -70,7 +70,7 @@
 
               <div class="form-group">
                 <%= gp.label :user_id%>
-                <%= gp.select(:user_id, User.all.map { |u| [u.name, u.id] }, class: "form-control") %>
+                <%= gp.select(:user_id, User.all.map { |u| [u.name, u.id] }, {}, class: "form-control custom-select") %>
               </div>
 
             <% end %>
