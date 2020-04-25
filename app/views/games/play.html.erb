@@ -1,41 +1,55 @@
-<div class="text-center mb-3 mt-3">
-  <h2><%= @game.name %></h2>
-  <h2>Round : <%= @game.display_round %></h2>
-  <h3 class="js-timer-display" data-timer-value="<%= Game::TIMER_VALUES[@game.round.to_sym] %>"></h3>
-  <button type="button" class="btn btn-secondary js-timer-btn js-timer-restart">Restart</button>
-  <button type="button" class="btn btn-secondary js-timer-btn js-timer-pause">Pause</button>
-</div>
+<div class="row">
+  <div class="col">
+    <div class="text-center mb-3 mt-3">
+      <h3><%= @game.name %></h3>
+      <p>Round : <%= @game.display_round %></p>
 
-<div>
-  <h1 data-available-words="<%= @game.words.available.pluck(:word).shuffle %>">current word : <span class="current-word"> </span></h1>
-
-  <div class="js-score-area">
-    <p>Words found : <span class="js-score" data-score="0">0</span> / <span class="js-max-score"><%= @game.words.available.count %> </span></p>
-  </div>
-
-  <div class="row mb-5">
-    <div class="col-md-6">
-      <div class="row">
-        <div class="col-md-4">
-          <button type="button" class="btn btn-success js-success-word btn-lg">Success</button>
+      <div class="row js-timer-sentence">
+        <div class="col-3">
+          <h3 class="js-timer-display" data-timer-value="<%= Game::TIMER_VALUES[@game.round.to_sym] %>"></h3>
         </div>
 
-        <div class="col-md-4">
-          <button type="button" class="btn btn-secondary js-next-word btn-lg" data-current-index="0">Pass</button>
+        <div class="col-9">
+          <button type="button" class="btn btn-secondary js-timer-btn js-timer-restart">Restart</button>
+          <button type="button" class="btn btn-secondary js-timer-btn js-timer-pause">Pause</button>
         </div>
       </div>
     </div>
-    <div class="col-md-6">
-      <div class="row">
-        <div class="col-md-4">
-          <%= link_to "End player turn", result_game_path(@game.slug), class: "btn btn-primary", role: "button" %>
-          <!-- <button type="button" class="btn btn-primary js-update-word-status">End player turn</button> -->
+
+    <div class="row">
+      <div class="col text-center">
+        <h4 data-available-words="<%= @game.words.available.pluck(:word).shuffle %>">current word : <span class="current-word"> </span></h4>
+
+        <div class="js-score-area">
+          <p>Words found : <span class="js-score" data-score="0">0</span> / <span class="js-max-score"><%= @game.words.available.count %> </span></p>
         </div>
 
-        <div class="col-md-4">
-          <%= form_for @game, url: reset_words_status_game_path(@game.slug), method: :put do |f| %>
-            <%= f.submit "End turn", class: "btn btn-primary" %>
-          <% end %>
+        <div class="row">
+          <div class="col-12 col-md-6 mb-5">
+            <div class="row">
+              <div class="col">
+                <button type="button" class="btn btn-success js-success-word btn-lg">Success</button>
+              </div>
+
+              <div class="col">
+                <button type="button" class="btn btn-secondary js-next-word btn-lg" data-current-index="0">Pass</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 mb-5">
+            <div class="row">
+              <div class="col">
+                <%= link_to "End player turn", result_game_path(@game.slug), class: "btn btn-primary", role: "button" %>
+                <!-- <button type="button" class="btn btn-primary js-update-word-status">End player turn</button> -->
+              </div>
+
+              <div class="col">
+                <%= form_for @game, url: reset_words_status_game_path(@game.slug), method: :put do |f| %>
+                  <%= f.submit "End turn", class: "btn btn-primary" %>
+                <% end %>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

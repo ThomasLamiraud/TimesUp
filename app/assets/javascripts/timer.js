@@ -55,14 +55,14 @@ function updateWords() {
       dataType: 'json',
       data: { words: JSON.stringify(document.found_words) },
       success: function(data) {
-        $('.js-timer-display').html("Results updated Click on 'End player turn' button to end your turn.");
+        $('.js-timer-sentence').html("Results updated Click on 'End player turn' button to end your turn.");
       },
       error: function(e) {
-        $('.js-timer-display').html("result not updated, something went wrong, call IT");
+        $('.js-timer-sentence').html("result not updated, something went wrong, call IT");
         console.log(e);
       }
     });
   } else {
-    $('.js-timer-display').html("No Results to update Click on 'End player turn' button to end your turn.");
+    $('.js-timer-sentence').html("No Results to update Click on 'End player turn' button to end your turn.");
   }
 }
