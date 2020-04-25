@@ -1,0 +1,26 @@
+<div class="jumbotron mt-5">
+  <h1 class="display-4">Welcome to timesup !</h1>
+  <p class="lead">This app will help you play the game you love while you cant gather all in the same room</p>
+
+  <hr class="my-4">
+  <p>Before starting playing i suggest you to have a video call with all the players so you can see other performing.</p>
+  <p>Someone among you need to be the admin, the guardian of the game, he will create the game settings (number of players, number of word, invite player to join the game).</p>
+  <p>Befoare that admin create a game you will all need to create a profile using that <%= link_to "link", signup_path %>,or the one in the navbar ("Create User"), so he can be able to add you to the game.</p>
+  <p>Once you are adding to a game, you will be inviting to add your words, and click "Start Game"</p>
+  <p>When every players have added their words and are ready to play, the first player can click "My turn to play" to start playing.</p>
+
+  <hr class="my-4">
+  <p class="lead"> Rules </p>
+  <p>Turn 1 : 30 seconds</p>
+  <p>Turn 2 : 45 seconds</p>
+  <p>Turn 3 : 60 seconds</p>
+  <p>Winner is the player who have scored the most (make his partner guess most of words)</p>
+  <p>The score have to be written on a separate sheet of paper.</p>
+
+  <hr class="my-4">
+  <p class="lead"> Turn </p>
+  <p>...</p>
+  <p>Ready ? please click the following button to create for first game : </p>
+  <hr class="my-4">
+  <%= link_to "Create a game", new_game_path, class: "btn btn-primary btn-lg" %>
+</div>

@@ -1,9 +1,9 @@
 <div>
-  <div class="row mb-5">
-    <div class="col text-center">
-      <h1>Welcome to timesup !</h1>
-    </div>
-  </div>
+  <% if @admin_games.empty? || @player_games.empty? %>
+    <%= render partial: '/more_infos/rules' %>
+  <% else %>
+    <h1 class="display-4 mb-4">Welcome to timesup !</h1>
+  <% end %>
 
   <div class="row">
     <% if current_user %>
