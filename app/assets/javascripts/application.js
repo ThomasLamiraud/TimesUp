@@ -19,3 +19,5 @@
 //= require bootstrap
 //= require game_on
 //= require timer
+//= require redirectUrl
+//= require score

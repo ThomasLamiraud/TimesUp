@@ -19,6 +19,7 @@ function initializeTimer() {
       if (count <= 0) {
         $time.html("<h3>Count down complete</h3>");
         updateWords()
+        redirectToUrl("play", "result")
         return;
       } else {
         $time.html(count);
@@ -35,7 +36,7 @@ function initializeTimer() {
   $('.js-timer-btn').on('click', function(){
     clearTimeout(timer);
     if ($(this).hasClass('js-timer-restart')) {
-      count = 0;
+      count = $('.js-timer-display').data('timer-value');
       paused = false;
       counter();
     } else {

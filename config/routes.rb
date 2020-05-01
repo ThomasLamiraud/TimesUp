@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     member do
       put :create_players
       get :play
-      put :reset_words_status
+      get :reset_words_status
       get :result
     end
   end

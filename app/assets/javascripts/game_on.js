@@ -34,6 +34,7 @@ function displayNextWord() {
   index = setIndex(current_index);
   if(document.words.length == 0) {
     $('.current-word').html("No more words");
+    redirectToUrl("play", "reset_words_status")
   } else {
     $('.current-word').html(document.words[index]);
   }
@@ -52,13 +53,4 @@ function removeWord() {
   word = document.words[$('.js-next-word').data('current-index')];
   document.found_words.push(word)
   document.words.splice($('.js-next-word').data('current-index'), 1);
-}
-
-function updateScore() {
-  currentScore = $(".js-score").data('score');
-  newScore = currentScore + 1;
-  if (newScore <= parseInt($(".js-max-score").html())) {
-    $(".js-score").data('score', newScore);
-    $(".js-score").html(newScore);
-  }
 }
