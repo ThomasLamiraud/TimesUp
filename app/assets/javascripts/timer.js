@@ -19,6 +19,7 @@ function initializeTimer() {
       if (count <= 0) {
         $time.html("<h3>Count down complete</h3>");
         updateWords("result")
+        // updateActionCable()
         return;
       } else {
         if (window.location.href.split("/").pop() !== "play") {
@@ -55,25 +56,55 @@ function initializeTimer() {
 
 function updateWords(successUrl) {
   if (document.found_words.length > 0) {
+    game_slug = window.location.pathname.split("/")[2]
     $.ajax({
       url: '/update_words',
       type: 'PUT',
       dataType: 'json',
       data: { words: JSON.stringify(document.found_words),
               player_id: $('.js-player-informations').data("player-id"),
-              game_slug: window.location.pathname.split("/")[2]
+              game_slug: game_slug
             },
       success: function(data) {
         $('.js-timer-sentence').html("Results updated Click on 'End player turn' button to end your turn.");
-        redirectToUrl("play", successUrl)
+        // updateActionCable(game_slug)
+        // redirectToUrl("play", successUrl)
       },
       error: function(e) {
         $('.js-timer-sentence').html("result not updated, something went wrong, call IT");
         console.log(e);
       }
-    });
+    })
+    .then(function(){
+      console.log("game_slug : " + game_slug);
+      url = '/games/' + game_slug + '/update_score'
+      return updateActionCable(game_slug, url)
+    })
+    .done(function(resp){
+      console.log("done");
+      console.log(resp);
+      // debugger
+      redirectToUrl("play", successUrl)
+    })
   } else {
     $('.js-timer-sentence').html("No Results to update Click on 'End player turn' button to end your turn.");
     redirectToUrl("play", successUrl)
   }
+}
+
+function updateActionCable(game_slug, url) {
+  console.log("updateActionCable");
+  $.ajax({
+    url: url,
+    type: 'PUT',
+    dataType: 'json',
+    success: function(data) {
+      console.log("success" + data);
+      return data
+    },
+    error: function(e) {
+      console.log(e);
+      return e
+    }
+  });
 }

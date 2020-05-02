@@ -22,7 +22,6 @@ function doInitializeGameOn() {
 }
 
 function setWords() {
-  console.log("toto");
   document.words = $('[data-available-words]').data('available-words')
   document.found_words = []
   $('.current-word').html(document.words[0]);
@@ -35,6 +34,7 @@ function displayNextWord() {
   if(document.words.length == 0) {
     $('.current-word').html("No more words");
     updateWords("reset_words_status")
+    // updateActionCable()
   } else {
     $('.current-word').html(document.words[index]);
   }

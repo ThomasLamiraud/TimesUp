@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require activestorage
+//= require_tree ./channels
 //= require_tree .
 //= require popper
 //= require bootstrap

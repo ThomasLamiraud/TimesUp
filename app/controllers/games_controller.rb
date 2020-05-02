@@ -71,6 +71,11 @@ class GamesController < ApplicationController
     @turns_data = game_manager.turns_data
   end
 
+  def update_score
+    ActionCable.server.broadcast "game_#{params[:slug]}", turns_data: game_manager.turns_data
+    head :ok
+  end
+
   private
 
   def game_manager

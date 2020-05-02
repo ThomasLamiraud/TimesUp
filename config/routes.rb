@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   root "welcome#welcome"
 
+  # Serve websocket cable requests in-process
+  mount ActionCable.server => '/cable'
+
   get '/signup', to: "registrations#new"
   post '/signup', to: "registrations#create"
 
@@ -17,8 +20,10 @@ Rails.application.routes.draw do
       get :reset_words_status
       get :result
       get :restart
+      put :update_score
     end
   end
+
 
   put "update_words", to: "words#update_words"
 end

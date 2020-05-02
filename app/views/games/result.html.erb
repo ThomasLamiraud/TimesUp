@@ -1,4 +1,4 @@
-<div class="text-center mb-3 mt-3">
+<div class="text-center mb-3 mt-3 js-result-page" data-game-slug=<%= @game.slug %>>
   <h2><%= @game.name %></h2>
 
   <% if @game.round == "turn_3" && @game.state == "finished" %>
@@ -20,7 +20,7 @@
         <th scope="col">Total Words found</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="js-result-table-body" >
       <% @turns_data.each do |turn_data| %>
         <tr>
           <th scope="row"><%= turn_data[:player].name %></th>
