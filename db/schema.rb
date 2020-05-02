@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_16_193400) do
+ActiveRecord::Schema.define(version: 2020_05_02_094539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,9 @@ ActiveRecord::Schema.define(version: 2020_04_16_193400) do
     t.boolean "hide"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id_turn_1"
+    t.integer "user_id_turn_2"
+    t.integer "user_id_turn_3"
   end
 
 end

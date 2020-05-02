@@ -22,8 +22,14 @@ function initializeTimer() {
         redirectToUrl("play", "result")
         return;
       } else {
-        $time.html(count);
-        console.log("Timer --> " + count);
+        if (window.location.href.split("/").pop() !== "play") {
+          clearTimeout(timer);
+          console.log("no play Timer --> " + count);
+          counter();
+        } else {
+          $time.html(count);
+          console.log("play Timer --> " + count);
+        }
       }
 
       timer = setTimeout(function(){
@@ -54,7 +60,10 @@ function updateWords() {
       url: '/update_words',
       type: 'PUT',
       dataType: 'json',
-      data: { words: JSON.stringify(document.found_words) },
+      data: { words: JSON.stringify(document.found_words),
+              player_id: $('.js-player-informations').data("player-id"),
+              game_slug: window.location.pathname.split("/")[2]
+            },
       success: function(data) {
         $('.js-timer-sentence').html("Results updated Click on 'End player turn' button to end your turn.");
       },

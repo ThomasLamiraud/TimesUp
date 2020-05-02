@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       get :play
       get :reset_words_status
       get :result
+      get :restart
     end
   end
 

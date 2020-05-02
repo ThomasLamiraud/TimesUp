@@ -1,5 +1,8 @@
 <div class="text-center mb-3 mt-3">
   <h3><%= @game.name %></h3>
+  <% if @game.state == "finished" %>
+    <%= link_to "restart game", restart_game_path(@game.slug), class: "btn btn-primary", role: "button" %>
+  <% end %>
 </div>
 <div class="row">
   <div class="col-md-4 col-sm-12">
@@ -21,6 +24,9 @@
       <li>
         <% if @user_words.empty? %>
           <p> No words yet, please create : </p>
+
+          <b> <%= current_user.name %> </b>
+          words :
 
           <%= form_for @game, url: game_path(@game.slug), method: :put do |f| %>
 
@@ -87,4 +93,6 @@
   </div>
 </div>
 
-<%= link_to "Start game", result_game_path(@game.slug), class: "btn btn-primary", role: "button" %>
+<% unless @game.state == "finished" %>
+  <%= link_to "Start game", result_game_path(@game.slug), class: "btn btn-primary", role: "button" %>
+<% end %>
