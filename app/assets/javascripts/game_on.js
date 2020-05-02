@@ -34,7 +34,7 @@ function displayNextWord() {
   index = setIndex(current_index);
   if(document.words.length == 0) {
     $('.current-word').html("No more words");
-    redirectToUrl("play", "reset_words_status")
+    updateWords("reset_words_status")
   } else {
     $('.current-word').html(document.words[index]);
   }

@@ -18,8 +18,7 @@ function initializeTimer() {
       count--;
       if (count <= 0) {
         $time.html("<h3>Count down complete</h3>");
-        updateWords()
-        redirectToUrl("play", "result")
+        updateWords("result")
         return;
       } else {
         if (window.location.href.split("/").pop() !== "play") {
@@ -54,7 +53,7 @@ function initializeTimer() {
   });
 }
 
-function updateWords() {
+function updateWords(successUrl) {
   if (document.found_words.length > 0) {
     $.ajax({
       url: '/update_words',
@@ -66,6 +65,7 @@ function updateWords() {
             },
       success: function(data) {
         $('.js-timer-sentence').html("Results updated Click on 'End player turn' button to end your turn.");
+        redirectToUrl("play", successUrl)
       },
       error: function(e) {
         $('.js-timer-sentence').html("result not updated, something went wrong, call IT");
@@ -74,5 +74,6 @@ function updateWords() {
     });
   } else {
     $('.js-timer-sentence').html("No Results to update Click on 'End player turn' button to end your turn.");
+    redirectToUrl("play", successUrl)
   }
 }

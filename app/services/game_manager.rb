@@ -17,6 +17,15 @@ class GameManager
     end
   end
 
+  def restart_game
+    game.update(state: :started)
+    game.words.update_all(round: :turn_1,
+                          hide: false,
+                          user_id_turn_1: nil,
+                          user_id_turn_2: nil,
+                          user_id_turn_3: nil)
+  end
+
   def turns_data
     turns_data = []
 
@@ -31,5 +40,17 @@ class GameManager
     end
 
     turns_data.sort_by! { |hsh| hsh[:total_score] }.reverse!
+  end
+
+  def update_turn
+    case game.round
+    when "turn_1"
+      game.round = "turn_2"
+    when "turn_2"
+      game.round = "turn_3"
+    when "turn_3"
+      game.state = "finished"
+    end
+    game.save
   end
 end

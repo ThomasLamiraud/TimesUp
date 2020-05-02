@@ -8,28 +8,28 @@
     <p>Coucou <b><%= current_user.name %></b>, quand ton tour viendra de jouer tu pourras cliquer sur le button ci dessous !</p>
 
     <%= link_to "My turn to play", play_game_path(@game.slug), class: "btn btn-primary", role: "button" %>
-
-    <table class="table mt-3">
-      <thead>
-        <tr>
-          <th scope="col">Players</th>
-          <th scope="col">turn 1</th>
-          <th scope="col">turn 2</th>
-          <th scope="col">turn 3</th>
-          <th scope="col">Total Words found</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @turns_data.each do |turn_data| %>
-          <tr>
-            <th scope="row"><%= turn_data[:player].name %></th>
-            <td> <%= turn_data[:score_turn_1] %> </td>
-            <td> <%= turn_data[:score_turn_2] %> </td>
-            <td> <%= turn_data[:score_turn_3] %> </td>
-            <td> <%= turn_data[:total_score] %> </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
   <% end %>
+
+  <table class="table mt-3">
+    <thead>
+      <tr>
+        <th scope="col">Players</th>
+        <th scope="col">turn 1</th>
+        <th scope="col">turn 2</th>
+        <th scope="col">turn 3</th>
+        <th scope="col">Total Words found</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @turns_data.each do |turn_data| %>
+        <tr>
+          <th scope="row"><%= turn_data[:player].name %></th>
+          <td> <%= turn_data[:score_turn_1] %> </td>
+          <td> <%= turn_data[:score_turn_2] %> </td>
+          <td> <%= turn_data[:score_turn_3] %> </td>
+          <td> <%= turn_data[:total_score] %> </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>

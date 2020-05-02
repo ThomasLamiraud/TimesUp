@@ -27,25 +27,12 @@ class GamesController < ApplicationController
   end
 
   def reset_words_status
-    @game = game_manager.game
+    game_manager.update_turn
 
-    case @game.round
-    when "turn_1"
-      @game.round = "turn_2"
-    when "turn_2"
-      @game.round = "turn_3"
-    when "turn_3"
-      @game.state = "finished"
-    end
-    @game.save
+    game = game_manager.game
+    game.words.update_all(hide: false) unless game.state == "finished"
 
-    @game.words.update_all(hide: false) unless @game.state == "finished"
-
-    if @game.round == "turn_3" && @game.state == "finished"
-      redirect_to result_game_path(@game.slug)
-    else
-      redirect_to play_game_path(@game.slug)
-    end
+    redirect_to result_game_path(game.slug)
   end
 
   def update
@@ -75,9 +62,8 @@ class GamesController < ApplicationController
   end
 
   def restart
-    @game = game_manager.game
-    @game.update(state: :started)
-    redirect_to game_path(@game.slug)
+    game_manager.restart_game
+    redirect_to game_path(game_manager.game.slug)
   end
 
   def result
