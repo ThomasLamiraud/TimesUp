@@ -1,14 +1,7 @@
 class WordsController < ApplicationController
   def update_words
     words = ActiveSupport::JSON.decode(params[:words])
-    game = Game
-           .includes(:user)
-           .joins(:user)
-           .includes(:users)
-           .left_joins(:users)
-           .includes(:words)
-           .left_joins(:words)
-           .find_by(slug: params[:game_slug])
+    game = GameManager.new(slug: params[:game_slug]).game
 
     turn = game.round
     game.words.where(word: words).each do |word|

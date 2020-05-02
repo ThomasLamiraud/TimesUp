@@ -17,32 +17,17 @@ class GamesController < ApplicationController
   end
 
   def show
-    @game = Game
-            .includes(:user)
-            .joins(:user)
-            .includes(:users)
-            .left_joins(:users)
-            .includes(:words)
-            .left_joins(:words)
-            .find_by(slug: params[:slug])
-
+    @game = game_manager.game
     user_words
     @game.word_count.times { @game.words.build } if @user_words.empty?
   end
 
   def play
-    @game = Game
-            .includes(:user)
-            .joins(:user)
-            .includes(:users)
-            .left_joins(:users)
-            .includes(:words)
-            .left_joins(:words)
-            .find_by(slug: params[:slug])
+    @game = game_manager.game
   end
 
   def reset_words_status
-    @game = Game.find_by(slug: params[:slug])
+    @game = game_manager.game
 
     case @game.round
     when "turn_1"
@@ -64,7 +49,7 @@ class GamesController < ApplicationController
   end
 
   def update
-    @game = Game.find_by(slug: params[:slug])
+    @game = game_manager.game
     respond_to do |format|
       if @game.update(update_params)
         format.html { redirect_to game_path(@game.slug) }
@@ -77,7 +62,7 @@ class GamesController < ApplicationController
   end
 
   def create_players
-    @game = Game.find_by(slug: params[:slug])
+    @game = game_manager.game
     respond_to do |format|
       if @game.update(player_params)
         format.html { redirect_to game_path(@game.slug) }
@@ -90,38 +75,21 @@ class GamesController < ApplicationController
   end
 
   def restart
-    @game = Game.find_by(slug: params[:slug])
+    @game = game_manager.game
     @game.update(state: :started)
     redirect_to game_path(@game.slug)
   end
 
   def result
-    @game = Game
-           .includes(:user)
-           .joins(:user)
-           .includes(:users)
-           .left_joins(:users)
-           .includes(:words)
-           .left_joins(:words)
-           .find_by(slug: params[:slug])
-
-    @turns_data = []
-
-    @game.users.map do |player|
-      p player.name
-      turn_data_hash = {}
-      turn_data_hash[:player] = player
-      turn_data_hash[:score_turn_1] = @game.words.where(user_id_turn_1: player.id).count
-      turn_data_hash[:score_turn_2] = @game.words.where(user_id_turn_2: player.id).count
-      turn_data_hash[:score_turn_3] = @game.words.where(user_id_turn_3: player.id).count
-      turn_data_hash[:total_score] = turn_data_hash[:score_turn_1] + turn_data_hash[:score_turn_2] + turn_data_hash[:score_turn_3]
-      @turns_data << turn_data_hash
-    end
-
-    @turns_data.sort_by! { |hsh| hsh[:total_score] }.reverse!
+    @game = game_manager.game
+    @turns_data = game_manager.turns_data
   end
 
   private
+
+  def game_manager
+    @game_manager ||= GameManager.new(slug: params[:slug])
+  end
 
   def game_params
     params.require(:game).permit(:name, :player_count, :word_count, :user_id, :round)

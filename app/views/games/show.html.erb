@@ -17,6 +17,9 @@
         <%= @game.word_count %>
       </li>
     </ul>
+    <% unless @game.state == "finished" %>
+      <%= link_to "Start game", result_game_path(@game.slug), class: "btn btn-primary", role: "button" %>
+    <% end %>
   </div>
 
   <div class="col-md-4 col-sm-12">
@@ -92,7 +95,3 @@
     </ul>
   </div>
 </div>
-
-<% unless @game.state == "finished" %>
-  <%= link_to "Start game", result_game_path(@game.slug), class: "btn btn-primary", role: "button" %>
-<% end %>
