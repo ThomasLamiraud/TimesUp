@@ -20,10 +20,9 @@ Rails.application.routes.draw do
       get :reset_words_status
       get :result
       get :restart
-      put :update_score
     end
   end
 
-
   put "update_words", to: "words#update_words"
+  put "broadcast_score_table", to: "games#broadcast_score_table"
 end

@@ -32,6 +32,10 @@ class GamesController < ApplicationController
     game = game_manager.game
     game.words.update_all(hide: false) unless game.state == "finished"
 
+    if game.is_finished?
+      ActionCable.server.broadcast "game_#{params[:slug]}", turns_data: game_manager.turns_data, is_finished: game.is_finished?
+    end
+
     redirect_to result_game_path(game.slug)
   end
 
@@ -71,9 +75,10 @@ class GamesController < ApplicationController
     @turns_data = game_manager.turns_data
   end
 
-  def update_score
-    ActionCable.server.broadcast "game_#{params[:slug]}", turns_data: game_manager.turns_data
-    head :ok
+  def broadcast_score_table
+    ActionCable.server.broadcast "game_#{params[:slug]}", turns_data: game_manager.turns_data, is_finished: game_manager.game.is_finished?
+
+    render json: { broadcast: "complete!" }
   end
 
   private

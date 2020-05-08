@@ -14,7 +14,11 @@ function doInitialization() {
 function createResultChannel(slug) {
   App.results = App.cable.subscriptions.create({channel: 'ResultsChannel', slug: slug}, {
     received: function(data) {
-      return $('.js-result-table-body').html(this.renderResultTable(data));
+
+      if (data.is_finished === true) {
+        $('.js-result-sentence').html(this.displayFinishSentence());
+      }
+      $('.js-result-table-body').html(this.renderResultTable(data));
     },
 
     renderResultTable: function(data) {
@@ -29,6 +33,10 @@ function createResultChannel(slug) {
                  </tr>`
       })
       return tableLines;
+    },
+
+    displayFinishSentence: function() {
+      return "<p> C'est fini, merci d'avoir participer n'hésitez à faire une donation à la fondation Toto®</p>";
     }
   });
 }

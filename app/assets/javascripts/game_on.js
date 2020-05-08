@@ -1,12 +1,9 @@
 $(document).on('turbolinks:load', function() {
-  console.log('game_on');
   doInitializeGameOn();
 });
 
 function doInitializeGameOn() {
-  console.log("game_on -- doInitialize [before]");
   if ($('[data-available-words]').length > 0) {
-    console.log("game_on -- doInitialize [inside]");
     setWords()
 
     $('.js-next-word').on('click', function (event) {
@@ -34,7 +31,6 @@ function displayNextWord() {
   if(document.words.length == 0) {
     $('.current-word').html("No more words");
     updateWords("reset_words_status")
-    // updateActionCable()
   } else {
     $('.current-word').html(document.words[index]);
   }
