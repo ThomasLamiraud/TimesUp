@@ -1,4 +1,3 @@
-$(document).on('turbolinks:load', function() {
-  $(".toast").toast({ autohide: false })
-  $(".toast").toast('show');
-});
+function destroyToastDiv(toast_div) {
+  $(toast_div).remove()
+}

@@ -20,6 +20,11 @@ class GamesController < ApplicationController
     @game = game_manager.game
     user_words
     @game.word_count.times { @game.words.build } if @user_words.empty?
+
+    if params[:from_toast]
+      ActionCable.server.broadcast "user_#{@game.user.id}", notification_partial: render_to_string(partial: 'layouts/toast', locals: { toast_pupose: :user_accepts, user_name: current_user.name, game: @game })
+    end
+
   end
 
   def play
@@ -43,6 +48,9 @@ class GamesController < ApplicationController
     @game = game_manager.game
     respond_to do |format|
       if @game.update(update_params)
+
+        ActionCable.server.broadcast "user_#{@game.user_id}", notification_partial: render_to_string(partial: 'layouts/toast', locals: { toast_pupose: :words_added, user_name: current_user.name, game: @game })
+
         format.html { redirect_to game_path(@game.slug) }
       else
         user_words
@@ -56,6 +64,14 @@ class GamesController < ApplicationController
     @game = game_manager.game
     respond_to do |format|
       if @game.update(player_params)
+        @game.reload
+        admin = @game.user
+        @game.users.each do |user|
+          next if user == current_user
+
+          ActionCable.server.broadcast "user_#{user.id}", notification_partial: render_to_string(partial: 'layouts/toast', locals: { toast_pupose: :game_inviation, user_name: admin.name, game: @game })
+        end
+
         format.html { redirect_to game_path(@game.slug) }
       else
         user_words

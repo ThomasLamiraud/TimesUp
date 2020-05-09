@@ -13,9 +13,13 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body class="js-user-id" data-user-id=<%= current_user&.id %> >
     <%= render partial: 'layouts/nav_bar' %>
-    <%= render partial: 'layouts/toast' %>
+    <div class="toast-container" aria-live="polite" aria-atomic="true">
+      <div class="toast-position">
+
+      </div>
+    </div>
     <div class="container">
       <%= yield %>
     </div>
