@@ -1,10 +1,10 @@
 $(document).on('turbolinks:load', function() {
   if ($('.js-result-page').length > 0) {
-    doInitialization();
+    initializeResult();
   }
 });
 
-function doInitialization() {
+function initializeResult() {
   slug = $('.js-result-page').data("game-slug");
   if (slug !== undefined) {
     createResultChannel(slug);
