@@ -1,0 +1,25 @@
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true">
+  <div class="toast-header">
+    <strong class="mr-auto"><%= game.name %></strong>
+    <button type="button" class="ml-2 mb-1 close js-destroy-toast" data-dismiss="toast" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <% case toast_pupose %>
+  <% when :user_accepts %>
+    <div class="toast-body">
+      <%= user_name %> join the game
+    </div>
+  <% when :words_added %>
+    <div class="toast-body">
+      <%= user_name %> added his words
+    </div>
+  <% when :game_inviation %>
+    <%= link_to game_path(game.slug, from_toast: true) do %>
+      <div class="toast-body">
+        <%= user_name %> invites you in his game
+      </div>
+    <% end %>
+  <% end %>
+</div>

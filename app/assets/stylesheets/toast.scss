@@ -1,0 +1,10 @@
+.toast-container {
+  position: relative;
+
+  .toast-position {
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    z-index: 10;
+  }
+}
