@@ -33,9 +33,9 @@ class Game < ApplicationRecord
   }
 
   TIMER_VALUES = {
-    turn_1: 5,
-    turn_2: 5,
-    turn_3: 5
+    turn_1: 30,
+    turn_2: 45,
+    turn_3: 60
   }
 
   def display_round
