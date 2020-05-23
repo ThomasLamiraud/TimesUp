@@ -2,16 +2,24 @@
 <html>
   <head>
     <title>Timesup</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= action_cable_meta_tag %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body class="js-user-id" data-user-id=<%= current_user&.id %> >
     <%= render partial: 'layouts/nav_bar' %>
+    <div class="toast-container" aria-live="polite" aria-atomic="true">
+      <div class="toast-position">
+
+      </div>
+    </div>
     <div class="container">
       <%= yield %>
     </div>

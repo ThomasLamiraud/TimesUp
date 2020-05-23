@@ -18,9 +18,8 @@ class GameManager
   end
 
   def restart_game
-    game.update(state: :started)
-    game.words.update_all(round: :turn_1,
-                          hide: false,
+    game.update(state: :started, round: :turn_1,)
+    game.words.update_all(hide: false,
                           user_id_turn_1: nil,
                           user_id_turn_2: nil,
                           user_id_turn_3: nil)

@@ -1,14 +1,17 @@
-<div class="text-center mb-3 mt-3">
+<div class="text-center mb-3 mt-3 js-result-page" data-game-slug=<%= @game.slug %>>
   <h2><%= @game.name %></h2>
 
-  <% if @game.round == "turn_3" && @game.state == "finished" %>
-    <p> C'est fini, merci d'avoir participer n'hésitez à faire une donation à la fondation Toto®</p>
-  <% else %>
+  <div class="js-result-sentence">
+    <% if @game.is_finished? %>
+      <p> C'est fini, merci d'avoir participer n'hésitez à faire une donation à la fondation Toto®</p>
 
-    <p>Coucou <b><%= current_user.name %></b>, quand ton tour viendra de jouer tu pourras cliquer sur le button ci dessous !</p>
+    <% else %>
 
-    <%= link_to "My turn to play", play_game_path(@game.slug), class: "btn btn-primary", role: "button" %>
-  <% end %>
+      <p>Coucou <b><%= current_user.name %></b>, quand ton tour viendra de jouer tu pourras cliquer sur le button ci dessous !</p>
+
+      <%= link_to "My turn to play", play_game_path(@game.slug), class: "btn btn-primary", role: "button" %>
+    <% end %>
+  </div>
 
   <table class="table mt-3">
     <thead>
@@ -20,7 +23,7 @@
         <th scope="col">Total Words found</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="js-result-table-body" >
       <% @turns_data.each do |turn_data| %>
         <tr>
           <th scope="row"><%= turn_data[:player].name %></th>

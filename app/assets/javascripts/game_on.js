@@ -1,12 +1,9 @@
 $(document).on('turbolinks:load', function() {
-  console.log('game_on');
   doInitializeGameOn();
 });
 
 function doInitializeGameOn() {
-  console.log("game_on -- doInitialize [before]");
   if ($('[data-available-words]').length > 0) {
-    console.log("game_on -- doInitialize [inside]");
     setWords()
 
     $('.js-next-word').on('click', function (event) {
@@ -22,7 +19,6 @@ function doInitializeGameOn() {
 }
 
 function setWords() {
-  console.log("toto");
   document.words = $('[data-available-words]').data('available-words')
   document.found_words = []
   $('.current-word').html(document.words[0]);

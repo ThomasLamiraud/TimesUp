@@ -49,6 +49,10 @@ class Game < ApplicationRecord
     end
   end
 
+  def is_finished?
+    round == "turn_3" && state == "finished"
+  end
+
   private
 
   def set_slug

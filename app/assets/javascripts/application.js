@@ -14,10 +14,13 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require activestorage
-//= require_tree .
 //= require popper
 //= require bootstrap
+//= require_tree ./channels
+//= require_tree .
+
 //= require game_on
+//= require toast
 //= require timer
 //= require redirectUrl
 //= require score

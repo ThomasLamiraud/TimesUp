@@ -6,3 +6,21 @@ function updateScore() {
     $(".js-score").html(newScore);
   }
 }
+
+function updateScoreTable(game_slug, successUrl) {
+  $.ajax({
+    url: '/broadcast_score_table',
+    type: 'PUT',
+    dataType: 'json',
+    data: { slug: game_slug }
+  })
+  .done(function(data) {
+    redirectToUrl("play", successUrl)
+  })
+  .fail(function(jqxhr, status, exception) {
+    console.log('updateScoreTable error');
+    console.log(jqxhr);
+    console.log(status);
+    console.log(exception);
+  });
+}

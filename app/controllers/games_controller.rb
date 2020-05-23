@@ -20,6 +20,11 @@ class GamesController < ApplicationController
     @game = game_manager.game
     user_words
     @game.word_count.times { @game.words.build } if @user_words.empty?
+
+    if params[:from_toast]
+      ActionCable.server.broadcast "user_#{@game.user.id}", notification_partial: render_to_string(partial: 'layouts/toast', locals: { toast_pupose: :user_accepts, user_name: current_user.name, game: @game })
+    end
+
   end
 
   def play
@@ -32,6 +37,10 @@ class GamesController < ApplicationController
     game = game_manager.game
     game.words.update_all(hide: false) unless game.state == "finished"
 
+    if game.is_finished?
+      ActionCable.server.broadcast "game_#{params[:slug]}", turns_data: game_manager.turns_data, is_finished: game.is_finished?
+    end
+
     redirect_to result_game_path(game.slug)
   end
 
@@ -39,6 +48,9 @@ class GamesController < ApplicationController
     @game = game_manager.game
     respond_to do |format|
       if @game.update(update_params)
+
+        ActionCable.server.broadcast "user_#{@game.user_id}", notification_partial: render_to_string(partial: 'layouts/toast', locals: { toast_pupose: :words_added, user_name: current_user.name, game: @game })
+
         format.html { redirect_to game_path(@game.slug) }
       else
         user_words
@@ -52,6 +64,14 @@ class GamesController < ApplicationController
     @game = game_manager.game
     respond_to do |format|
       if @game.update(player_params)
+        @game.reload
+        admin = @game.user
+        @game.users.each do |user|
+          next if user == current_user
+
+          ActionCable.server.broadcast "user_#{user.id}", notification_partial: render_to_string(partial: 'layouts/toast', locals: { toast_pupose: :game_inviation, user_name: admin.name, game: @game })
+        end
+
         format.html { redirect_to game_path(@game.slug) }
       else
         user_words
@@ -69,6 +89,12 @@ class GamesController < ApplicationController
   def result
     @game = game_manager.game
     @turns_data = game_manager.turns_data
+  end
+
+  def broadcast_score_table
+    ActionCable.server.broadcast "game_#{params[:slug]}", turns_data: game_manager.turns_data, is_finished: game_manager.game.is_finished?
+
+    render json: { broadcast: "complete!" }
   end
 
   private
